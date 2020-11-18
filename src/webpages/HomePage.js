@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../components/homePage/Button';
+import ReactCalendar from '../components/homePage/ReactCalendar'
 
 class HomePage extends React.Component
 {
@@ -13,13 +14,6 @@ class HomePage extends React.Component
         this.gasDown = this.gasDown.bind(this);
 
     }
-
-  /*  componentDidMount()
-    {
-        this.setState({
-            number: 1
-        });
-    }*/
 
     gas(ammount)
     {
@@ -43,9 +37,10 @@ class HomePage extends React.Component
                 <Button amount={10} buttonText="God damnit" action={this.gas}/>
                 <Button amount={7} buttonText="Button" action={this.gasDown}/>
                 <Button amount={this.state.number} buttonText="Alert" action={(parameter) => {
-                    console.log("First line");
+                    console.log(React.version);
                     console.log("Here is the amount: "+ parameter);
                 }}/>
+                <ReactCalendar/>
             </div>
         );
     }
