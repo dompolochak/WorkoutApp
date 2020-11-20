@@ -18,8 +18,7 @@ class AddWorkoutForm extends React.Component
        // this.setState({name: event.target.value, date: event.target.value});
        const value = event.target.value;
        this.setState({
-            ...this.state,
-            [event.target.name]: value
+            [event.target.id]: value
         });
     }
 
@@ -36,9 +35,9 @@ class AddWorkoutForm extends React.Component
                 <label>
                     Enter your workout info
                     <br/>
-                    <input type= "text" name = "name" value={this.state.name} onChange={this.handleChange}/>
+                    <input type= "text" id = "name" value={this.state.name} onChange={this.handleChange}/>
                     <br/>
-                    <input type= "text" name = "Date" value={this.state.date} onChange={this.handleChange}/>   
+                    <input type= "text" id = "date" value={this.state.date} onChange={this.handleChange}/>   
                 </label>
                 <br/>
                 <input type = "submit" value = "submit"/>
