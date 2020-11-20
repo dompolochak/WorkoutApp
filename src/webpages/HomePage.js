@@ -1,48 +1,43 @@
 import React from 'react';
 import Button from '../components/homePage/Button';
 import ReactCalendar from '../components/homePage/ReactCalendar'
+import AddWorkoutFrom from './AddWorkoutForm'
 
 class HomePage extends React.Component
 {
     constructor(props)
     {
         super(props);
-        this.state = {
-            number: 0
-        };
-        this.gas = this.gas.bind(this);
-        this.gasDown = this.gasDown.bind(this);
-
+        this.state={showAdd: false}
+        this.showAddForm = this.showAddForm.bind(this);
     }
 
-    gas(ammount)
+    showAddForm()
     {
-        this.setState({
-            number: this.state.number+ammount
-        });
-    }
-
-    gasDown(ammount)
-    {
-        this.setState({
-            number: this.state.number-ammount
-        });
+        this.setState({showAdd: true});
     }
 
     render()
     {
-        return(
-            <div>
-                <p>Hello cruel world {this.state.number}</p>
-                <Button amount={10} buttonText="God damnit" action={this.gas}/>
-                <Button amount={7} buttonText="Button" action={this.gasDown}/>
-                <Button amount={this.state.number} buttonText="Alert" action={(parameter) => {
-                    console.log(React.version);
-                    console.log("Here is the amount: "+ parameter);
-                }}/>
-                <ReactCalendar/>
-            </div>
-        );
+        let isClicked = this.state.showAdd;
+        if(isClicked){
+            return (
+                <div>
+                    <AddWorkoutFrom/>
+                </div>
+            );
+        }
+            
+        else{
+            return(
+                <div>
+                    <ReactCalendar/>
+                    <br/>
+                    <Button buttonText = "Add workout" action = {this.showAddForm}/>
+                </div>
+            );
+        }
+
     }
 }
 
