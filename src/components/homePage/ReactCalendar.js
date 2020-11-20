@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import Calendar from 'react-calendar';
 
-const ReactCalendar = () => {
+
+const ReactCalendar = ({tileInfo}) => {
     const [date, setDate] = useState(new Date());
 
     const onChange = date => {
@@ -9,7 +10,7 @@ const ReactCalendar = () => {
     }
 
     return(
-        <Calendar onChange={onChange} value={date}/>
+        <Calendar onChange={onChange} value={date} tileContent={tileInfo}/>
     )
 };
 
