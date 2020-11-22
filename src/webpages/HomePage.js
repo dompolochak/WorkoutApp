@@ -1,15 +1,18 @@
 import React from 'react';
 import Button from '../components/homePage/Button';
-import ReactCalendar from '../components/homePage/ReactCalendar'
-import AddWorkoutFrom from './AddWorkoutForm'
+import ReactCalendar from '../components/homePage/ReactCalendar';
+import AddWorkoutFrom from './AddWorkoutForm';
+import axios from 'axios';
 
 class HomePage extends React.Component
 {
     constructor(props)
     {
         super(props);
-        this.state={showAdd: false, tile: false}
+        this.state={showAdd: false, tile: false, data: null}
         this.showAddForm = this.showAddForm.bind(this);
+        this.fetchWorkouts = this.fetchWorkouts.bind(this);
+        this.postWorkouts = this.postWorkouts.bind(this);
     }
 
     showAddForm()
@@ -21,6 +24,39 @@ class HomePage extends React.Component
     {
         this.setState({tile: true})
     }
+
+    async fetchWorkouts() {
+        await axios
+            .get('http://localhost:4000/get_workouts')
+            .then(results => {
+                console.log(results);
+                this.setState({data: results.data});
+            })
+            .catch(error => {
+                console.log(error.response);
+            });
+    }
+
+    async postWorkouts()
+    {
+        await axios
+            .post('http://localhost:4000/post_workouts', {
+                Lift_ID: 1
+            })
+            .then((response)=>{
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error.response);
+            })
+    }
+
+    componentDidMount()
+    {
+        this.fetchWorkouts();
+        this.postWorkouts();
+    }
+
     render()
     {
         let isClicked = this.state.showAdd;
@@ -39,6 +75,12 @@ class HomePage extends React.Component
                     <ReactCalendar tileInfo = {tileContent}/>
                     <br/>
                     <Button buttonText = "Add workout" action = {this.showAddForm}/>
+                    {
+                        this.state.data && 
+                        this.state.data.map(item => {
+                            return <p>{item.Lift_name}</p>;
+                        })
+                    }
                 </div>
             );
         }
