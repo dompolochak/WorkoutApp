@@ -4,6 +4,7 @@ import ReactCalendar from '../components/homePage/ReactCalendar';
 import AddWorkoutFrom from './AddWorkoutForm';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Table from '../components/homePage/Table';
 
 /*Notes
 this.props.history.replace("/addWorkoutForm"); //redirect without back arrow
@@ -15,19 +16,8 @@ class HomePage extends React.Component
     constructor(props)
     {
         super(props);
-        this.state={showTable: false, tile: false, data: null}
-        this.displayTable = this.displayTable.bind(this);
+        this.state={data: null, table: <div/>}
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
-    }
-
-    displayTable()
-    {
-        this.setState({showTable: true});
-    }
-
-    changeTile()
-    {
-        this.setState({tile: true})
     }
 
     async fetchWorkouts() {
@@ -62,7 +52,10 @@ class HomePage extends React.Component
         else{
             return(
                 <div>
-                    <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} />
+                    
+                    <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} display={newTableValue=>{this.setState({table: newTableValue})}} />
+                    <br/>
+                    {this.state.table}
                     <br/>
                     <Link to="/addWorkoutForm"  style={{textDecoration: 'none'}}>
                         <Button buttonText = "Add workout" action={()=>{}}/>
