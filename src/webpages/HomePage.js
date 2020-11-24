@@ -12,7 +12,6 @@ class HomePage extends React.Component
         this.state={showAdd: false, tile: false, data: null}
         this.showAddForm = this.showAddForm.bind(this);
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
-        this.postWorkouts = this.postWorkouts.bind(this);
     }
 
     showAddForm()
@@ -26,7 +25,7 @@ class HomePage extends React.Component
     }
 
     async fetchWorkouts() {
-        await axios
+        await axios//get all workouts and set to data
             .get('http://localhost:4000/get_workouts')
             .then(results => {
                 console.log(results);
@@ -37,24 +36,9 @@ class HomePage extends React.Component
             });
     }
 
-    async postWorkouts()
-    {
-        await axios
-            .post('http://localhost:4000/post_workouts', {
-                Lift_ID: 1
-            })
-            .then((response)=>{
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error.response);
-            })
-    }
-
     componentDidMount()
     {
         this.fetchWorkouts();
-        this.postWorkouts();
     }
 
     render()
@@ -75,12 +59,6 @@ class HomePage extends React.Component
                     <ReactCalendar tileInfo = {tileContent}/>
                     <br/>
                     <Button buttonText = "Add workout" action = {this.showAddForm}/>
-                    {
-                        this.state.data && 
-                        this.state.data.map(item => {
-                            return <p>{item.Lift_name}</p>;
-                        })
-                    }
                 </div>
             );
         }

@@ -10,7 +10,7 @@ const ReactCalendar = ({tileInfo}) => {
     }
 
     return(
-        <Calendar onChange={onChange} value={date} tileContent={tileInfo}/>
+        <Calendar onChange={onChange} value={date} tileContent={tileInfo} onClickDay = {(event, value) => console.log(event)}/>
     )
 };
 
