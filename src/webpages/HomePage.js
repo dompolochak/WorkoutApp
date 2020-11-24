@@ -3,20 +3,26 @@ import Button from '../components/homePage/Button';
 import ReactCalendar from '../components/homePage/ReactCalendar';
 import AddWorkoutFrom from './AddWorkoutForm';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
+/*Notes
+this.props.history.replace("/addWorkoutForm"); //redirect without back arrow
+//console.log(this.props.match.params.var_name); Sending stuff through link
+*/
 
 class HomePage extends React.Component
 {
     constructor(props)
     {
         super(props);
-        this.state={showAdd: false, tile: false, data: null}
-        this.showAddForm = this.showAddForm.bind(this);
+        this.state={showTable: false, tile: false, data: null}
+        this.displayTable = this.displayTable.bind(this);
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
     }
 
-    showAddForm()
+    displayTable()
     {
-        this.setState({showAdd: true});
+        this.setState({showTable: true});
     }
 
     changeTile()
@@ -43,7 +49,7 @@ class HomePage extends React.Component
 
     render()
     {
-        let isClicked = this.state.showAdd;
+        let isClicked = this.state.showTable;
         let tile = this.state.tile
         const tileContent = ({ date, view }) => view === 'month' && date.getDay() === 4 ? <p>Chest Day</p> : null;
         if(isClicked){
@@ -56,9 +62,11 @@ class HomePage extends React.Component
         else{
             return(
                 <div>
-                    <ReactCalendar tileInfo = {tileContent}/>
+                    <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} />
                     <br/>
-                    <Button buttonText = "Add workout" action = {this.showAddForm}/>
+                    <Link to="/addWorkoutForm"  style={{textDecoration: 'none'}}>
+                        <Button buttonText = "Add workout" action={()=>{}}/>
+                    </Link>
                 </div>
             );
         }

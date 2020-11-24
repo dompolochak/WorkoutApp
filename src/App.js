@@ -1,18 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { render } from '@testing-library/react';
 import HomePage from './webpages/HomePage';
+import {Route, withRouter} from 'react-router-dom'
+import AddWorkoutForm from './webpages/AddWorkoutForm';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <HomePage/>
+        <Route exact path="/" component={HomePage}/>
+        <Route exact path="/addWorkoutForm" component={AddWorkoutForm}/>
       </header>
     </div>
   );
 }
 
 
-export default App;
+export default withRouter(App);
