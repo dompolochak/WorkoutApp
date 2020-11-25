@@ -1,10 +1,10 @@
 
 .Button{
-    width:200px;
-    padding:20px 40px;
+    width:100px;
+    padding:5px 5px;
     background-color:#edd83d;
     color: white;
-    font-size: 1.3em;
+    font-size: large;
     text-align: center; 
 }
 

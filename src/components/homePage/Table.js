@@ -1,13 +1,17 @@
 import React from 'react';
 import axios from 'axios';
 import '../../styles/HomePage/Table.css';
+import Button from './Button.js';
+import { Link } from 'react-router-dom';
 class Table extends React.Component
 {
     constructor(props)
     {
         super(props);
-       // this.state = {reformedDate: ''}
+        this.state = {reformedDate: '', deleteID: null, showForm: false}
         this.parseDate = this.parseDate.bind(this);
+        this.deleteInput = this.deleteInput.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     parseDate(arrayOfStrings)
@@ -59,6 +63,36 @@ class Table extends React.Component
         return newStr;
     }
 
+    deleteInput()
+    {
+       return(
+        <div>
+            Enter Lift ID to Delete
+            <form onSubmit={this.handleSubmit}>
+                    <input type="text" value={this.state.deleteID} onChange={event=>{this.setState({deleteID: event.target.value})}}/>
+                    <input type="submit" value="Submit" /> 
+            </form>
+        </div>
+       );
+    }
+
+    handleSubmit(event)
+    {
+        this.deleteWorkout();
+        event.preventDefault();
+    }
+
+    async deleteWorkout()
+    {
+        await axios 
+            .post('http://localhost:4000/delete_workout', {
+                Lift_ID: this.state.deleteID
+            })
+            .then(results=>{console.log(results)})//console any error messages
+            .catch(error=>{console.log(error)});
+        window.location.reload();
+    }
+
 
     render()
     {    
@@ -108,8 +142,11 @@ class Table extends React.Component
                             </tbody>
                             );
                         })}
-                </table>               
-                {console.log(todaysArray)}     
+                </table> 
+                
+                <Button buttonText="Delete" action={()=>this.setState({showForm: true})}/>
+                <div className="formDisplay">{this.state.showForm ? this.deleteInput() : null} </div> 
+                              
             </div>
         );
     }

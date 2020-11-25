@@ -6,3 +6,9 @@ table,th,td{
 table {
     width: 50%;
 }
+
+.formDisplay{
+    position: relative;
+    right: 10px;
+    top: 0;
+}
