@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import Calendar from 'react-calendar';
-import Table from './Table.js'
+import Table from './Table.js';
+import '../../styles/HomePage/Calendar.css';
+import 'react-calendar/dist/Calendar.css';
 /* {        
     props.queryInfo &&
     props.queryInfo.filter((item, index, queryInfo)=>{ 
@@ -22,10 +24,7 @@ const ReactCalendar = (props) => {
     }
 
     return(
-        <div>
-
         <Calendar onChange={onChange} value={date} tileContent={props.tileInfo} onClickDay = {(value, event)=>props.display(<Table date={value} data={props.queryInfo}/>)}/>
-        </div>
     )
 };
 

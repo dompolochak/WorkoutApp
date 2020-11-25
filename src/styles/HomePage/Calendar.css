@@ -1,0 +1,12 @@
+.calendarContainer .react-calendar{
+    width: 100% !important;
+}
+
+.calendarContainer{
+    width: 80%;
+    margin: 0 10%;
+}
+
+.tile{
+    height: 50px;
+}

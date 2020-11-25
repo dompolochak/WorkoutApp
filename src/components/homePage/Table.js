@@ -7,14 +7,14 @@ class Table extends React.Component
     {
         super(props);
        // this.state = {reformedDate: ''}
-        this.setString = this.setString.bind(this);
+        this.parseDate = this.parseDate.bind(this);
     }
 
-    setString(parsedDate)
+    parseDate(arrayOfStrings)
     {
-        let newStr=parsedDate[3];
+        let newStr=arrayOfStrings[3];
         newStr += '-';
-        switch(parsedDate[1])
+        switch(arrayOfStrings[1])
         {
             case 'Jan':
                 newStr+='01';
@@ -54,7 +54,7 @@ class Table extends React.Component
             break;
         }
         newStr+='-';
-        newStr+=parsedDate[2];
+        newStr+=arrayOfStrings[2];
 
         return newStr;
     }
@@ -63,8 +63,8 @@ class Table extends React.Component
     render()
     {    
         let dateString = this.props.date + '';
-        let parsedDate = dateString.split(" ");
-        let reformedDate = this.setString(parsedDate);
+        let arrayOfStrings = dateString.split(" ");
+        let reformedDate = this.parseDate(arrayOfStrings);
         let temp, backendDate;
         
         
@@ -76,7 +76,6 @@ class Table extends React.Component
         return(
             <div>     
                 <table>
-                    <thead>
                         <th>Lift ID</th>
                         <th>Lift Name</th>
                         <th>1</th>
@@ -84,10 +83,10 @@ class Table extends React.Component
                         <th>3</th>
                         <th>4</th>
                         <th>5</th>
-                    </thead>
+                    
                         {todaysArray.map(item=>{
                             return(
-                            <tbody>
+                            <tbody key={item.Lift_ID}>
                                 <tr>
                                     <td>{item.Lift_ID}</td>
                                     <td>{item.Lift_name}</td>

@@ -4,6 +4,7 @@ import ReactCalendar from '../components/homePage/ReactCalendar';
 import AddWorkoutFrom from './AddWorkoutForm';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+
 import Table from '../components/homePage/Table';
 
 /*Notes
@@ -18,6 +19,7 @@ class HomePage extends React.Component
         super(props);
         this.state={data: null, table: <div/>}
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
+        this.parseDate = this.parseDate.bind(this);
     }
 
     async fetchWorkouts() {
@@ -37,11 +39,81 @@ class HomePage extends React.Component
         this.fetchWorkouts();
     }
 
+    parseDate(arrayOfStrings)
+    {
+        let newStr=arrayOfStrings[3];
+        newStr += '-';
+        switch(arrayOfStrings[1])
+        {
+            case 'Jan':
+                newStr+='01';
+            break;
+            case 'Feb':
+                newStr+='02';
+            break;
+            case 'Mar':
+                newStr+='03';
+            break;
+            case 'Apr':
+                newStr+='04';
+            break;
+            case 'May':
+                newStr+='05';
+            break;
+            case 'Jun':
+                newStr+='06';
+            break;
+            case 'Jul':
+                newStr+='07';
+            break;
+            case 'Aug':
+                newStr+='08';
+            break;
+            case 'Sep':
+                newStr+='09';
+            break;
+            case 'Oct':
+                newStr+='10';
+            break;
+            case 'Nov':
+                newStr+='11';
+            break;
+            case 'Dec':
+                newStr+='12';
+            break;
+        }
+        newStr+='-';
+        newStr+=arrayOfStrings[2];
+
+        return newStr;
+    }
+
     render()
     {
         let isClicked = this.state.showTable;
         let tile = this.state.tile
-        const tileContent = ({ date, view }) => view === 'month' && date.getDay() === 4 ? <p>Chest Day</p> : null;
+        let dateString, arrayOfStrings, reformedDate, temp, backendDate, todaysArray, tileContent;
+        //const tileContent = ({ date, view }) => view === 'month' && date.getDay() === 4 ? <p>Chest Day</p> : null;
+        if(this.state.data){
+            tileContent = ({ date, view }) => {
+                if(view === 'month')
+                {
+                    dateString = date + '';
+                    arrayOfStrings = dateString.split(" ");
+                    reformedDate = this.parseDate(arrayOfStrings);
+
+                    todaysArray = this.state.data.filter(item=>{
+                        temp = item.Date.split('T');
+                        backendDate = temp[0];
+                        return backendDate == reformedDate;
+                    })
+                    if(todaysArray.length)
+                        return(<div className="tile"><p>Lift</p></div>);
+                    else
+                    return <div className="tile"></div>;                
+                }
+            }
+        }
         if(isClicked){
             return (
                 <div>
@@ -51,7 +123,7 @@ class HomePage extends React.Component
         }             
         else{
             return(
-                <div>
+                <div className="calendarContainer">
                     
                     <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} display={newTableValue=>{this.setState({table: newTableValue})}} />
                     <br/>
