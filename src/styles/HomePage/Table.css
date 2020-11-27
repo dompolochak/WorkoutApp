@@ -7,8 +7,21 @@ table {
     width: 50%;
 }
 
+form{
+    width:50%;
+}
+
+th,td{
+    padding: 10px;
+}
+
 .formDisplay{
+    float: left;
     position: relative;
-    right: 10px;
     top: 0;
+}
+
+.DeleteForm{
+    height:50px;
+    text-align: left;
 }

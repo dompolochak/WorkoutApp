@@ -8,10 +8,26 @@ class Table extends React.Component
     constructor(props)
     {
         super(props);
-        this.state = {reformedDate: '', deleteID: null, showForm: false}
+        this.state = {reformedDate: '', 
+                      deleteID: null, 
+                      showDeleteForm: false, 
+                      showEditForm: false,
+                      name: '',
+                      set1: null,
+                      set2: null,
+                      set3: null,
+                      set4: null,
+                      set5: null,
+                      weight1: null,
+                      weight2: null,
+                      weight3: null,
+                      weight4: null,
+                      weight5: null,
+                      date: ''}
         this.parseDate = this.parseDate.bind(this);
         this.deleteInput = this.deleteInput.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.editWorkout = this.editWorkout.bind(this);
+        this.deleteWorkout = this.deleteWorkout.bind(this);
     }
 
     parseDate(arrayOfStrings)
@@ -66,20 +82,90 @@ class Table extends React.Component
     deleteInput()
     {
        return(
-        <div>
+        <div className="DeleteForm">
             Enter Lift ID to Delete
-            <form onSubmit={this.handleSubmit}>
-                    <input type="text" value={this.state.deleteID} onChange={event=>{this.setState({deleteID: event.target.value})}}/>
+            <form onSubmit={this.deleteWorkout}>
+                    <input type="text" value={this.state.deleteID ? this.state.deleteID : ''} onChange={event=>{this.setState({deleteID: event.target.value})}}/>
                     <input type="submit" value="Submit" /> 
             </form>
+            <br/>
         </div>
        );
     }
 
-    handleSubmit(event)
+    editInput()
     {
-        this.deleteWorkout();
-        event.preventDefault();
+        return(
+            <div>
+                Enter only what you would like to change
+                <br/>
+                <form onSubmit={this.editWorkout}>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+
+                        </tr>
+                    <tr>
+                        <td><input type="text" value={this.state.name} onChange={event=>{this.setState({name: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set1} onChange={event=>{this.setState({set1: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set2} onChange={event=>{this.setState({set2: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set3} onChange={event=>{this.setState({set3: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set4} onChange={event=>{this.setState({set4: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set5} onChange={event=>{this.setState({set5: event.target.value})}}></input></td>
+                    </tr>
+                    <tr>
+                        <td/>
+                        <td><input type="text" value={this.state.weight1} onChange={event=>{this.setState({weight1: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight2} onChange={event=>{this.setState({weight2: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight3} onChange={event=>{this.setState({weight3: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight4} onChange={event=>{this.setState({weight4: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight5} onChange={event=>{this.setState({weight5: event.target.value})}}></input></td>
+                        <td rowSpan="2">Date<input type="text" value={this.state.date} onChange={event=>{this.setState({date: event.target.value})}}></input></td>
+                    </tr>
+                    </table>
+                    <input type="submit" value="Submit"/>
+                </form>
+            </div>
+        )
+    }
+
+    // handleEditSubmit(event)
+    // {
+    //     this.editWorkout();
+    // }
+
+    // handleDeleteSubmit(event)
+    // {
+    //     this.deleteWorkout();
+    //     event.preventDefault();
+    // }
+
+    async editWorkout()
+    {
+        await axios
+            .post('http://localhost:4000/edit_workout',{
+                Lift_ID: this.state.deleteID,
+                Lift_name: this.state.name,
+                Set1: this.state.set1,
+                Set2: this.state.set2,
+                Set3: this.state.set3,
+                Set4: this.state.set4,
+                Set5: this.state.set5,
+                Weight1: this.state.weight1,
+                Weight2: this.state.weight2,
+                Weight3: this.state.weight3,
+                Weight4: this.state.weight4,
+                Weight5: this.state.weight5,
+                Date: this.state.date                 
+            })
+            .then(results=>{console.log(results)})
+            .catch(error=>{console.log(error)});
+        window.location.reload();
     }
 
     async deleteWorkout()
@@ -105,18 +191,22 @@ class Table extends React.Component
         let todaysArray = this.props.data.filter(item=>{
             temp = item.Date.split('T');
             backendDate = temp[0];
-            return backendDate == reformedDate;
+            return backendDate === reformedDate;
         })
         return(
             <div>     
                 <table>
-                        <th>Lift ID</th>
-                        <th>Lift Name</th>
-                        <th>1</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
+                    <thead>
+                        <tr>
+                            <th>Lift ID</th>
+                            <th>Lift Name</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                        </tr>
+                    </thead>
                     
                         {todaysArray.map(item=>{
                             return(
@@ -129,6 +219,9 @@ class Table extends React.Component
                                     <td>{item.Set3}</td>
                                     <td>{item.Set4}</td>
                                     <td>{item.Set5}</td>
+                                    <td rowSpan="2"> <Button buttonText="Edit" action={()=>{this.setState({showEditForm: true});
+                                    this.setState({deleteID: item.Lift_ID})}}/></td>
+                                    
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -143,9 +236,10 @@ class Table extends React.Component
                             );
                         })}
                 </table> 
+                {this.state.showEditForm ? this.editInput() : <p/>}
                 
-                <Button buttonText="Delete" action={()=>this.setState({showForm: true})}/>
-                <div className="formDisplay">{this.state.showForm ? this.deleteInput() : null} </div> 
+                <Button buttonText="Delete" action={()=>this.setState({showDeleteForm: true})}/>
+               {this.state.showDeleteForm ? this.deleteInput() : <p></p>}
                               
             </div>
         );

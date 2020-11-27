@@ -105,7 +105,7 @@ class HomePage extends React.Component
                     todaysArray = this.state.data.filter(item=>{
                         temp = item.Date.split('T');
                         backendDate = temp[0];
-                        return backendDate == reformedDate;
+                        return backendDate === reformedDate;
                     })
                     if(todaysArray.length)
                         return(<div className="tile"><p>Lift</p></div>);
@@ -114,14 +114,7 @@ class HomePage extends React.Component
                 }
             }
         }
-        if(isClicked){
-            return (
-                <div>
-                    <AddWorkoutFrom/>
-                </div>
-            );
-        }             
-        else{
+
             return(
                 <div className="calendarContainer">
                     
@@ -134,7 +127,7 @@ class HomePage extends React.Component
                     </Link>
                 </div>
             );
-        }
+        
 
     }
 }
