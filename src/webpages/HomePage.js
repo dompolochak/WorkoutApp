@@ -21,7 +21,7 @@ class HomePage extends React.Component
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
         this.parseDate = this.parseDate.bind(this);
     }
-
+    //Run backend function to fetch workouts for quick operations
     async fetchWorkouts() {
         await axios//get all workouts and set to data
             .get('http://localhost:4000/get_workouts')
@@ -38,7 +38,8 @@ class HomePage extends React.Component
     {
         this.fetchWorkouts();
     }
-
+    //pre: takes an array of strings split from react-calendar date format
+    //post: returns a string in the format of the mySQL Date data type
     parseDate(arrayOfStrings)
     {
         let newStr=arrayOfStrings[3];
@@ -81,6 +82,8 @@ class HomePage extends React.Component
             case 'Dec':
                 newStr+='12';
             break;
+            default:
+            break;
         }
         newStr+='-';
         newStr+=arrayOfStrings[2];
@@ -93,21 +96,21 @@ class HomePage extends React.Component
         let isClicked = this.state.showTable;
         let tile = this.state.tile
         let dateString, arrayOfStrings, reformedDate, temp, backendDate, todaysArray, tileContent;
-        //const tileContent = ({ date, view }) => view === 'month' && date.getDay() === 4 ? <p>Chest Day</p> : null;
+        //if data in database display message on the date of the workout
         if(this.state.data){
             tileContent = ({ date, view }) => {
                 if(view === 'month')
                 {
                     dateString = date + '';
                     arrayOfStrings = dateString.split(" ");
-                    reformedDate = this.parseDate(arrayOfStrings);
-
+                    reformedDate = this.parseDate(arrayOfStrings);//change react-calendar format to Date format
+                    //loop through data and return array of dates where a there is workout 
                     todaysArray = this.state.data.filter(item=>{
                         temp = item.Date.split('T');
                         backendDate = temp[0];
                         return backendDate === reformedDate;
                     })
-                    if(todaysArray.length)
+                    if(todaysArray.length)//give dates a message
                         return(<div className="tile"><p>Lift</p></div>);
                     else
                     return <div className="tile"></div>;                
