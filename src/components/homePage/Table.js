@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import '../../styles/HomePage/Table.css';
 import Button from './Button.js';
+import ROUTES from '../../Utilities/routes.js';
 class Table extends React.Component
 {
     constructor(props)
@@ -153,7 +154,7 @@ class Table extends React.Component
     async editWorkout()
     {
         await axios
-            .post('http://localhost:4000/edit_workout',{
+            .post(ROUTES.edit_workouts,{
                 Lift_ID: this.state.deleteID,
                 Lift_name: this.state.name,
                 Set1: this.state.set1,
@@ -176,7 +177,7 @@ class Table extends React.Component
     async deleteWorkout()
     {
         await axios 
-            .post('http://localhost:4000/delete_workout', {
+            .post(ROUTES.delete_workouts, {
                 Lift_ID: this.state.deleteID
             })
             .then(results=>{console.log(results)})//console any error messages

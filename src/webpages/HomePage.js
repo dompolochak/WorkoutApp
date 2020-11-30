@@ -3,6 +3,7 @@ import Button from '../components/homePage/Button';
 import ReactCalendar from '../components/homePage/ReactCalendar';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import ROUTES from '../Utilities/routes.js';
 
 
 /*Notes
@@ -22,7 +23,7 @@ class HomePage extends React.Component
     //Run backend function to fetch workouts for quick operations
     async fetchWorkouts() {
         await axios//get all workouts and set to data
-            .get('http://localhost:4000/get_workouts')
+            .get(ROUTES.get_workouts)
             .then(results => {
                 console.log(results);
                 this.setState({data: results.data});

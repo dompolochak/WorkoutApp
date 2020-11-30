@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
 import ToggleSwitch from '../components/homePage/ToggleSwitch.js';
+import ROUTES from '../Utilities/routes.js';
 
 class AddWorkoutForm extends React.Component
 {
@@ -74,7 +75,7 @@ class AddWorkoutForm extends React.Component
     {
         console.log(this.state.date);
         await axios //call backend
-            .post('http://localhost:4000/post_workouts',{
+            .post(ROUTES.post_workouts,{
                 Lift_name: this.state.name,
                 Set1: this.state.set1,
                 Set2: this.state.set2,
