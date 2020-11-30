@@ -52,6 +52,7 @@ class AddWorkoutForm extends React.Component
     handleSubmit(event)
     {
         if(!this.validateInput()){
+            event.preventDefault();
             return;
         }
         let dateArray = this.state.date.split('-');
