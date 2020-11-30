@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Link, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import ToggleSwitch from '../components/homePage/ToggleSwitch.js';
 
 class AddWorkoutForm extends React.Component
@@ -22,12 +22,13 @@ class AddWorkoutForm extends React.Component
             weight5: null,
             date: '' ,
             submitted: false, 
-            toggle: false 
+            toggle: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.postWorkouts = this.postWorkouts.bind(this);
         this.daysPerMonth = this.daysPerMonth.bind(this);
+        this.validateInput = this.validateInput.bind(this);
     }
 
     handleChange(event)
@@ -49,22 +50,24 @@ class AddWorkoutForm extends React.Component
     }
     handleSubmit(event)
     {
+        if(!this.validateInput()){
+            return;
+        }
+        let dateArray = this.state.date.split('-');
+        let day = parseInt(dateArray[2], 10);
+        let dateStr = dateArray[0] +'-'+dateArray[1]+'-'+day.toString();
         if(this.state.toggle){
-            let dateArray = this.state.date.split('-');
-            let day = parseInt(dateArray[2], 10);
-            let dateStr;
             for(day; day<this.daysPerMonth(); day+=7)
             {
                 dateStr = dateArray[0] +'-'+dateArray[1]+'-'+day.toString();
                 this.postWorkouts(dateStr);
                 console.log(this.state.date);
-               // this.postWorkouts();
             }
         }
         else
-            this.postWorkouts();
+            this.postWorkouts(dateStr);
         this.setState({submitted: true});
-        event.preventDefault();
+       // event.preventDefault();
     }
 
     async postWorkouts(dateStr)
@@ -87,6 +90,58 @@ class AddWorkoutForm extends React.Component
             })
             .then()//console any error messages
             .catch(error=>{console.log(error)});
+    }
+    isInt(value)
+    {
+        if(!value)
+            return false;
+        const regex = new RegExp("[0-9]+");
+        for(let i=0; i<value.length; ++i){
+            if(!regex.test(value[i]))
+                return false;
+        }
+        return true;
+    }
+
+    validateInput()
+    {
+        let array = this.state.date.split("-");
+        if((this.state.set1 && !this.isInt(this.state.set1)) 
+        || (this.state.set2 && !this.isInt(this.state.set2)) 
+        || (this.state.set3 && !this.isInt(this.state.set3)) 
+        || (this.state.set4 && !this.isInt(this.state.set4)) 
+        || (this.state.set5 && !this.isInt(this.state.set5)) 
+        || (this.state.weight1 && !this.isInt(this.state.weight1)) 
+        || (this.state.weight2 && !this.isInt(this.state.weight2)) 
+        || (this.state.weight3 && !this.isInt(this.state.weight3)) 
+        || (this.state.weight4 && !this.isInt(this.state.weight4)) 
+        || (this.state.weight5 && !this.isInt(this.state.weight5)))
+        {
+            alert("Sets and Weights must be integers");
+            return false;
+            
+        }
+        else if(!this.state.date)
+        {
+            alert("You forgot to add a date");
+            return false;
+        }
+        else if(array.length!==3 
+            || array[0].length!==4 
+            || array[1].length!==2 
+            || array[2].length!==2 
+            || isNaN(parseInt(array[0], 10)) 
+            || isNaN(parseInt(array[1], 10)) 
+            || isNaN(parseInt(array[2], 10))
+            || array[1]>12
+            || array[1]<1
+            || array[2]>this.daysPerMonth()
+            || array[2]<1)
+        {
+            alert("Error in your date format YYYY-MM-DD");
+            return false;
+        }  
+        return true;
     }
     
 
@@ -143,9 +198,8 @@ class AddWorkoutForm extends React.Component
                                 xsMargin="10px, 10px"
                                 inactiveColor="#999"
                                 activeColor="#efde57"    
-                                 />           
-                    <input type = "submit" value = "submit" style={{margin:'10px'}}/>
-                
+                                 />         
+                    <input type = "submit" value = "submit" style={{margin:'10px'}}/>                
             </form>
         );
     }

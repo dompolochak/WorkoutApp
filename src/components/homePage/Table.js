@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import '../../styles/HomePage/Table.css';
 import Button from './Button.js';
-import { Link } from 'react-router-dom';
 class Table extends React.Component
 {
     constructor(props)
@@ -72,6 +71,8 @@ class Table extends React.Component
             case 'Dec':
                 newStr+='12';
             break;
+            default:
+            break;
         }
         newStr+='-';
         newStr+=arrayOfStrings[2];
@@ -101,6 +102,7 @@ class Table extends React.Component
                 <br/>
                 <form onSubmit={this.editWorkout}>
                     <table>
+                    <thead>
                         <tr>
                             <th>Name</th>
                             <th>1</th>
@@ -110,23 +112,26 @@ class Table extends React.Component
                             <th>5</th>
 
                         </tr>
+                    </thead>
+                    <tbody>
                     <tr>
-                        <td><input type="text" value={this.state.name} onChange={event=>{this.setState({name: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.set1} onChange={event=>{this.setState({set1: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.set2} onChange={event=>{this.setState({set2: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.set3} onChange={event=>{this.setState({set3: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.set4} onChange={event=>{this.setState({set4: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.set5} onChange={event=>{this.setState({set5: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.name || ''} onChange={event=>{this.setState({name: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set1 || ''} onChange={event=>{this.setState({set1: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set2 || ''} onChange={event=>{this.setState({set2: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set3 || ''} onChange={event=>{this.setState({set3: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set4 || ''} onChange={event=>{this.setState({set4: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.set5 || ''} onChange={event=>{this.setState({set5: event.target.value})}}></input></td>
                     </tr>
                     <tr>
                         <td/>
-                        <td><input type="text" value={this.state.weight1} onChange={event=>{this.setState({weight1: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.weight2} onChange={event=>{this.setState({weight2: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.weight3} onChange={event=>{this.setState({weight3: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.weight4} onChange={event=>{this.setState({weight4: event.target.value})}}></input></td>
-                        <td><input type="text" value={this.state.weight5} onChange={event=>{this.setState({weight5: event.target.value})}}></input></td>
-                        <td rowSpan="2">Date<input type="text" value={this.state.date} onChange={event=>{this.setState({date: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight1 || ''} onChange={event=>{this.setState({weight1: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight2 || ''} onChange={event=>{this.setState({weight2: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight3 || ''} onChange={event=>{this.setState({weight3: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight4 || ''} onChange={event=>{this.setState({weight4: event.target.value})}}></input></td>
+                        <td><input type="text" value={this.state.weight5 || ''} onChange={event=>{this.setState({weight5: event.target.value})}}></input></td>
+                        <td rowSpan="2">Date<input type="text" value={this.state.date || ''} onChange={event=>{this.setState({date: event.target.value})}}></input></td>
                     </tr>
+                    </tbody>
                     </table>
                     <input type="submit" value="Submit"/>
                 </form>

@@ -3,10 +3,6 @@ import '../../styles/HomePage/Button.css';
 
 class Button extends Component
 {
-    constructor(props)
-    {
-        super(props);
-    }
 
     render()
     {

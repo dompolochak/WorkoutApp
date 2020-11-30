@@ -1,11 +1,9 @@
 import React from 'react';
 import Button from '../components/homePage/Button';
 import ReactCalendar from '../components/homePage/ReactCalendar';
-import AddWorkoutFrom from './AddWorkoutForm';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import Table from '../components/homePage/Table';
 
 /*Notes
 this.props.history.replace("/addWorkoutForm"); //redirect without back arrow
@@ -93,8 +91,6 @@ class HomePage extends React.Component
 
     render()
     {
-        let isClicked = this.state.showTable;
-        let tile = this.state.tile
         let dateString, arrayOfStrings, reformedDate, temp, backendDate, todaysArray, tileContent;
         //if data in database display message on the date of the workout
         if(this.state.data){
