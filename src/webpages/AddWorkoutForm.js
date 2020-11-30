@@ -201,7 +201,7 @@ class AddWorkoutForm extends React.Component
                                 inactiveColor="#999"
                                 activeColor="#efde57"    
                                  />         
-                    <input type = "button" value = "submit" style={{margin:'10px'}}/>                
+                    <input type = "submit" value = "submit" style={{margin:'10px'}}/>                
             </form>
         );
     }
