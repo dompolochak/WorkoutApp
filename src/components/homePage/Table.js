@@ -90,20 +90,19 @@ class Table extends React.Component
        return(
         <div className="DeleteForm">
             Enter Lift ID to Delete
-            <form onSubmit={this.deleteValidation}>
+            <div>
                     <input type="text" value={this.state.deleteID ? this.state.deleteID : ''} onChange={event=>{this.setState({deleteID: event.target.value})}}/>
-                    <input type="submit" value="Submit" /> 
-            </form>
+                    <input type="button" value="Submit" onClick={this.deleteValidation} /> 
+            </div>
             <br/>
         </div>
        );
     }
     
-    deleteValidation(event)
+    deleteValidation()
     {
         if(!this.isInt(this.state.deleteID)){
             alert("ID must be a number");
-            event.preventDefault();
             return;
         }
         this.deleteWorkout();
@@ -115,7 +114,7 @@ class Table extends React.Component
             <div>
                 Enter only what you would like to change
                 <br/>
-                <form onSubmit={this.handleEditSubmit}>
+                <div>
                     <table>
                     <thead>
                         <tr>
@@ -148,8 +147,8 @@ class Table extends React.Component
                     </tr>
                     </tbody>
                     </table>
-                    <input type="submit" value="Submit"/>
-                </form>
+                    <input type="button" value="Submit" onClick={this.handleEditSubmit}/>
+                </div>
             </div>
         )
     }
@@ -218,7 +217,6 @@ class Table extends React.Component
     {
         if(!this.validateInput())
         {
-            event.preventDefault();
             return;
         }
         this.editWorkout();
@@ -261,7 +259,6 @@ class Table extends React.Component
             })
             .then(results=>{console.log(results)})//console any error messages
             .catch(error=>{console.log(error)});
-        event.preventDefault();
         window.location.reload();
     }
 

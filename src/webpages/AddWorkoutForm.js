@@ -151,7 +151,7 @@ class AddWorkoutForm extends React.Component
     {
         if(this.state.submitted)
         {
-            return <Redirect to = "/"/>;
+            return <Redirect  push to = "/"/>;
         }
         return(
             //Display input fields 
