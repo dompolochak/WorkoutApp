@@ -216,7 +216,10 @@ class Table extends React.Component
     handleEditSubmit(event)
     {
         if(!this.validateInput())
+        {
+            event.preventDefault();
             return;
+        }
         this.editWorkout();
     }
 
@@ -249,7 +252,7 @@ class Table extends React.Component
         window.location.reload();
     }
 
-    async deleteWorkout()
+    async deleteWorkout(event)
     {
         await axios 
             .post(ROUTES.delete_workouts, {
@@ -257,6 +260,7 @@ class Table extends React.Component
             })
             .then(results=>{console.log(results)})//console any error messages
             .catch(error=>{console.log(error)});
+        event.preventDefault();
         window.location.reload();
     }
 
