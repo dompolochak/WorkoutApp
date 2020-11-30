@@ -118,6 +118,7 @@ class HomePage extends React.Component
 
             return(
                 <div className="calendarContainer">
+                    <header style={{fontSize: "3em", margin:"20px"}}>Work It</header>
                     
                     <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} display={newTableValue=>{this.setState({table: newTableValue})}} />
                     <br/>
