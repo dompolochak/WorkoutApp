@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import ROUTES from '../Utilities/routes.js';
 
 
+
 /*Notes
 this.props.history.replace("/addWorkoutForm"); //redirect without back arrow
 //console.log(this.props.match.params.var_name); Sending stuff through link
@@ -124,6 +125,10 @@ class HomePage extends React.Component
                     <br/>
                     <Link to="/addWorkoutForm"  style={{textDecoration: 'none'}}>
                         <Button buttonText = "Add workout" action={()=>{}}/>
+                    </Link>
+                    <br/>
+                    <Link to="/Help" style={{textDecoration: 'none'}}>
+                        <Button buttonText="Help" action={()=>{}}/>
                     </Link>
                 </div>
             );
