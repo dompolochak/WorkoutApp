@@ -28,6 +28,10 @@ class Table extends React.Component
         this.deleteInput = this.deleteInput.bind(this);
         this.editWorkout = this.editWorkout.bind(this);
         this.deleteWorkout = this.deleteWorkout.bind(this);
+        this.validateInput = this.validateInput.bind(this);
+        this.daysPerMonth = this.daysPerMonth.bind(this);
+        this.handleEditSubmit = this.handleEditSubmit.bind(this);
+        this.deleteValidation = this.deleteValidation.bind(this);
     }
 
     parseDate(arrayOfStrings)
@@ -86,13 +90,22 @@ class Table extends React.Component
        return(
         <div className="DeleteForm">
             Enter Lift ID to Delete
-            <form onSubmit={this.deleteWorkout}>
+            <form onSubmit={this.deleteValidation}>
                     <input type="text" value={this.state.deleteID ? this.state.deleteID : ''} onChange={event=>{this.setState({deleteID: event.target.value})}}/>
                     <input type="submit" value="Submit" /> 
             </form>
             <br/>
         </div>
        );
+    }
+    
+    deleteValidation()
+    {
+        if(!this.isInt(this.state.deleteID)){
+            alert("ID must be a number");
+            return;
+        }
+        this.deleteWorkout();
     }
 
     editInput()
@@ -101,7 +114,7 @@ class Table extends React.Component
             <div>
                 Enter only what you would like to change
                 <br/>
-                <form onSubmit={this.editWorkout}>
+                <form onSubmit={this.handleEditSubmit}>
                     <table>
                     <thead>
                         <tr>
@@ -140,10 +153,72 @@ class Table extends React.Component
         )
     }
 
-    // handleEditSubmit(event)
-    // {
-    //     this.editWorkout();
-    // }
+    daysPerMonth()
+    {
+        var month = (this.state.date[5]*10)+this.state.date[6];
+        if(month === 2)
+            return 28;
+        else if(month === 4 || month === 6 || month === 9 || month === 11)
+            return 30;
+        else 
+            return 31;
+    }
+
+    isInt(value)
+    {
+        if(!value)
+            return false;
+        const regex = new RegExp("[0-9]+");
+        for(let i=0; i<value.length; ++i){
+            if(!regex.test(value[i]))
+                return false;
+        }
+        return true;
+    }
+
+    validateInput()
+    {
+        let array = this.state.date.split("-");
+        if((this.state.set1 && !this.isInt(this.state.set1)) 
+        || (this.state.set2 && !this.isInt(this.state.set2)) 
+        || (this.state.set3 && !this.isInt(this.state.set3)) 
+        || (this.state.set4 && !this.isInt(this.state.set4)) 
+        || (this.state.set5 && !this.isInt(this.state.set5)) 
+        || (this.state.weight1 && !this.isInt(this.state.weight1)) 
+        || (this.state.weight2 && !this.isInt(this.state.weight2)) 
+        || (this.state.weight3 && !this.isInt(this.state.weight3)) 
+        || (this.state.weight4 && !this.isInt(this.state.weight4)) 
+        || (this.state.weight5 && !this.isInt(this.state.weight5)))
+        {
+            alert("Sets and Weights must be integers");
+            return false;
+            
+        }
+        else if(this.state.date && (array.length!==3 
+            || array[0].length!==4 
+            || array[1].length!==2 
+            || array[2].length!==2 
+            || isNaN(parseInt(array[0], 10)) 
+            || isNaN(parseInt(array[1], 10)) 
+            || isNaN(parseInt(array[2], 10))
+            || array[1]>12
+            || array[1]<1
+            || array[2]>this.daysPerMonth()
+            || array[2]<1))
+        {
+            alert("Error in your date format YYYY-MM-DD");
+            return false;
+        }  
+        
+        return true;
+    }
+
+    handleEditSubmit(event)
+    {
+        if(!this.validateInput())
+            return;
+        this.editWorkout();
+    }
 
     // handleDeleteSubmit(event)
     // {
