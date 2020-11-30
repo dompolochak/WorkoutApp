@@ -58,7 +58,7 @@ class AddWorkoutForm extends React.Component
         let day = parseInt(dateArray[2], 10);
         let dateStr = dateArray[0] +'-'+dateArray[1]+'-'+day.toString();
         if(this.state.toggle){
-            for(day; day<this.daysPerMonth(); day+=7)
+            for(day; day<=this.daysPerMonth(); day+=7)
             {
                 dateStr = dateArray[0] +'-'+dateArray[1]+'-'+day.toString();
                 this.postWorkouts(dateStr);
@@ -68,7 +68,7 @@ class AddWorkoutForm extends React.Component
         else
             this.postWorkouts(dateStr);
         this.setState({submitted: true});
-       // event.preventDefault();
+        event.preventDefault();
     }
 
     async postWorkouts(dateStr)
@@ -200,7 +200,7 @@ class AddWorkoutForm extends React.Component
                                 inactiveColor="#999"
                                 activeColor="#efde57"    
                                  />         
-                    <input type = "submit" value = "submit" style={{margin:'10px'}}/>                
+                    <input type = "button" value = "submit" style={{margin:'10px'}}/>                
             </form>
         );
     }
