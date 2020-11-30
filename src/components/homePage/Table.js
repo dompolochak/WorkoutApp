@@ -99,10 +99,11 @@ class Table extends React.Component
        );
     }
     
-    deleteValidation()
+    deleteValidation(event)
     {
         if(!this.isInt(this.state.deleteID)){
             alert("ID must be a number");
+            event.preventDefault();
             return;
         }
         this.deleteWorkout();
