@@ -1,0 +1,9 @@
+.LoadingScreen{
+    height: 100vh;
+    width: 100vw;
+    background-color: #efde57;
+    color: #333;
+    font-size: 2em;
+    text-align: center;
+    padding-top: 45vh;
+}

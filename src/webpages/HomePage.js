@@ -4,6 +4,7 @@ import ReactCalendar from '../components/homePage/ReactCalendar';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ROUTES from '../Utilities/routes.js';
+import '../styles/HomePage/HomePage.css';
 
 
 
@@ -17,7 +18,7 @@ class HomePage extends React.Component
     constructor(props)
     {
         super(props);
-        this.state={data: null, table: <div/>}
+        this.state={data: null, table: <div/>, loading: true}
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
         this.parseDate = this.parseDate.bind(this);
     }
@@ -27,7 +28,7 @@ class HomePage extends React.Component
             .get(ROUTES.get_workouts)
             .then(results => {
                 console.log(results);
-                this.setState({data: results.data});
+                this.setState({data: results.data, loading: false});
             })
             .catch(error => {
                 console.log(error.response);
@@ -93,8 +94,13 @@ class HomePage extends React.Component
 
     render()
     {
+        if(this.state.loading)
+        {
+            return (<div className="LoadingScreen">Loading...</div>)
+        }
         let dateString, arrayOfStrings, reformedDate, temp, backendDate, todaysArray, tileContent;
         //if data in database display message on the date of the workout
+
         if(this.state.data){
             tileContent = ({ date, view }) => {
                 if(view === 'month')
@@ -111,29 +117,27 @@ class HomePage extends React.Component
                     if(todaysArray.length)//give dates a message
                         return(<div className="tile"><p>Lift</p></div>);
                     else
-                    return <div className="tile"></div>;                
+                        return <div className="tile"></div>;                
                 }
             }
         }
-
-            return(
-                <div className="calendarContainer">
-                    <header style={{fontSize: "3em", margin:"20px"}}>Work It</header>
-                    
-                    <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} display={newTableValue=>{this.setState({table: newTableValue})}} />
-                    <br/>
-                    {this.state.table}
-                    <br/>
-                    <Link to="/addWorkoutForm"  style={{textDecoration: 'none'}}>
-                        <Button buttonText = "Add workout" action={()=>{}}/>
-                    </Link>
-                    <br/>
-                    <Link to="/Help" style={{textDecoration: 'none'}}>
-                        <Button buttonText="Help" action={()=>{}}/>
-                    </Link>
-                </div>
-            );
-        
+        return(
+            <div key={this.state.data} className="calendarContainer">
+                <header style={{fontSize: "3em", margin:"20px"}}>Work It</header>
+                
+                <ReactCalendar tileInfo = {tileContent} queryInfo = {this.state.data} display={newTableValue=>{this.setState({table: newTableValue})}} />
+                <br/>
+                {this.state.table}
+                <br/>
+                <Link to="/addWorkoutForm"  style={{textDecoration: 'none'}}>
+                    <Button buttonText = "Add workout" action={()=>{}}/>
+                </Link>
+                <br/>
+                <Link to="/Help" style={{textDecoration: 'none'}}>
+                    <Button buttonText="Help" action={()=>{}}/>
+                </Link>
+            </div>
+        );     
 
     }
 }
