@@ -23,7 +23,8 @@ class AddWorkoutForm extends React.Component
             weight5: null,
             date: '' ,
             submitted: false, 
-            toggle: false
+            toggle: false,
+            done: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -52,12 +53,12 @@ class AddWorkoutForm extends React.Component
     handleSubmit(event)
     {
         if(!this.validateInput()){
-            event.preventDefault();
             return;
         }
         let dateArray = this.state.date.split('-');
         let day = parseInt(dateArray[2], 10);
-        let dateStr = dateArray[0] +'-'+dateArray[1]+'-'+day.toString();
+        let dateStr;
+        dateStr = dateArray[0] +'-'+dateArray[1]+'-'+day.toString();
         if(this.state.toggle){
             for(day; day<=this.daysPerMonth(); day+=7)
             {
@@ -68,13 +69,10 @@ class AddWorkoutForm extends React.Component
         }
         else
             this.postWorkouts(dateStr);
-        this.setState({submitted: true});
-        event.preventDefault();
     }
 
     async postWorkouts(dateStr)
     {
-        console.log(this.state.date);
         await axios //call backend
             .post(ROUTES.post_workouts,{
                 Lift_name: this.state.name,
@@ -90,9 +88,10 @@ class AddWorkoutForm extends React.Component
                 Weight5: this.state.weight5,
                 Date: dateStr
             })
-            .then()//console any error messages
+            .then(()=>this.setState({done: true}))//console any error messages
             .catch(error=>{console.log(error)});
     }
+
     isInt(value)
     {
         if(!value)
@@ -149,13 +148,13 @@ class AddWorkoutForm extends React.Component
 
     render()
     {
-        if(this.state.submitted)
-        {
-            return <Redirect  push to = "/"/>;
+        if(this.state.done)
+        {      
+            return <Redirect to = "/"/>;
         }
         return(
             //Display input fields 
-            <form onSubmit={this.handleSubmit}>
+            <div>
                 <label>
                     Enter your workout info
                     <br/>
@@ -201,8 +200,8 @@ class AddWorkoutForm extends React.Component
                                 inactiveColor="#999"
                                 activeColor="#efde57"    
                                  />         
-                    <input type = "submit" value = "submit" style={{margin:'10px'}}/>                
-            </form>
+                    <input type = "button" value = "submit" style={{margin:'10px'}} onClick={this.handleSubmit}/>                
+            </div>
         );
     }
 }
