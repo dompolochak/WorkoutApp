@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ROUTES from '../Utilities/routes.js';
 import '../styles/HomePage/HomePage.css';
+import LoginPage from './LoginPage';
+import LoadingPage from '../components/LoadingPage'
 
 
 
@@ -18,7 +20,7 @@ class HomePage extends React.Component
     constructor(props)
     {
         super(props);
-        this.state={data: null, table: <div/>, loading: true}
+        this.state={data: null, table: <div/>, loading: true, loggedIn: false}
         this.fetchWorkouts = this.fetchWorkouts.bind(this);
         this.parseDate = this.parseDate.bind(this);
     }
@@ -97,7 +99,7 @@ class HomePage extends React.Component
     {
         if(this.state.loading)
         {
-            return (<div className="LoadingScreen">Loading...</div>)
+            return (<LoadingPage/>);
         }
         let dateString, arrayOfStrings, reformedDate, temp, backendDate, todaysArray, tileContent;
         //if data in database display message on the date of the workout
@@ -121,6 +123,12 @@ class HomePage extends React.Component
                         return <div className="tile"></div>;                
                 }
             }
+        }
+        if(!this.state.loggedIn)
+        {
+            return(
+                <LoginPage/>
+            );
         }
         return(
             <div key={this.state.data} className="calendarContainer">
