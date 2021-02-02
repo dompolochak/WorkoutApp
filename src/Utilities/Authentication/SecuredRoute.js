@@ -6,6 +6,9 @@ import LoadingPage from '../../components/LoadingPage'
 
 
 function SecuredRoute(props){
+    //Takes component displayed if authenticated, else redirects to login page
+    //takes checkingSession from AuthHandler
+    //path is desired path sent from App.js
     const {component: Component, path, checkingSession, ...rest} = props;
 
     return(
