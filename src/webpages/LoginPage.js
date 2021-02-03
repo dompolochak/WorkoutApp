@@ -1,16 +1,18 @@
 import React from 'react';
 import Button from '../components/homePage/Button';
 import axios from 'axios';
+import auth from '../Utilities/Authentication/AuthHandler';
 
 class LoginPage extends React.Component
 {
     constructor(props)
     {
         super(props);
-        this.state={username: null, password: null, createAccount: false, repassword: null};
+        this.state={username: null, password: null, createAccount: false, repassword: null, email: null};
         this.handleChange = this.handleChange.bind(this);
         this.checkInputs = this.checkInputs.bind(this);
         this.handleInput = this.handleInput.bind(this);
+        this.validateEmail = this.validateEmail.bind(this);
     }
 
     handleChange(event)
@@ -20,13 +22,26 @@ class LoginPage extends React.Component
             [event.target.id]: value
         });
     }
-    handleInput()
+    //called one enter button
+    async handleInput()
     {
-        if(!this.checkInputs())
+        if(!this.checkInputs())//input validation
             return;
-    
-
+        else if(this.state.createAccount)//create new account
+        {
+            //promise in AuthHandler takes user information and tries to register
+            await auth.requestRegistration(this.state.username, this.state.email, this.state.password)
+            .then((results)=>{console.log(results);})
+            .catch((error)=>{console.log(error);});
+        }
+        else//login existing account
+        {
+            await auth.requestLogin(this.state.username, this.state.password)
+            .then(results=>{console.log(results);})
+            .catch((error)=>{console.log(error);});
+        }
     }
+
     checkInputs()
     {
         if(!this.state.username)
@@ -34,24 +49,30 @@ class LoginPage extends React.Component
             alert("Username was left blank");
             return false;
         }
-        if(!this.state.password || !this.state.repassword)
-        {
-            alert("One of the password lines was left blank");
-            return false;
-        }
-        if(this.state.password !== this.state.repassword)
-        {
-            alert("Passwords do not match");
-            return false;
+        if(this.state.createAccount){
+            if(!this.state.password || !this.state.repassword)
+            {
+                alert("One of the password lines was left blank");
+                return false;
+            }
+            if(this.state.password !== this.state.repassword)
+            {
+                alert("Passwords do not match");
+                return false;
+            }
+            if(!this.state.email || !this.validateEmail())
+            {
+                alert("Invalid email");
+                return false;
+            }
         }
         else
             return true;
     }
 
-    async addUser()
-    {
-        await axios
-            .post()
+    validateEmail(){
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email);
+        //Regex for "__@__.__"
     }
 
     render()
@@ -63,6 +84,8 @@ class LoginPage extends React.Component
                     <p>Username:</p> 
                     <input type="text" id="username" value={this.state.username ? this.state.username : ''} onChange={this.handleChange}/>
                     <br/>
+                    <p>Email:</p>
+                    <input type="text" id = "email" value={this.state.email ? this.state.email : ''} onChange={this.handleChange}/> 
                     <p>Password:</p>
                     <input type="text" id="password" value={this.state.password ? this.state.password : ''} onChange={this.handleChange}/>
                     <br/>
@@ -79,7 +102,7 @@ class LoginPage extends React.Component
                 <br/>
                 <p>Password:</p>
                 <input type="text" id="password" value={this.state.password ? this.state.password : ''} onChange={this.handleChange}/>
-                <Button buttonText="Enter" action={()=>{}}/>
+                <Button buttonText="Enter" action={this.handleInput}/>
                 <Button buttonText="Create Account" action={()=>{this.setState({createAccount: true})}}/>
             </div>
         );

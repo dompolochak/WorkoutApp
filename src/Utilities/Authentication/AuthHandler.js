@@ -29,6 +29,47 @@ class AuthHandler{
             
         });
     }
+    //pre: take username, email, and password from login page
+    //post: if register successful resolve promise, else reject
+    requestRegistration(username, email, password)
+    {
+        return new Promise((resolve,reject)=>{
+            axios.post(ROUTES.register,{
+                username: username,
+                email: email,
+                password: password
+            })
+            .then(results=>{
+                this.authenticated = true;
+                resolve(results);
+            })
+            .catch(error=>{
+                this.authenticated = false;
+                reject(error);
+            });
+           
+        });
+    }
+    //pre: take user info from login page
+    //post: attempt login and resolve or reject
+    requestLogin(username, password){
+        return new Promise((resolve,reject)=>{
+            // axios.post(ROUTES.login,{
+            //     username: username,
+            //     password: password
+            // })
+            // .then(results=>{
+            //     this.authenticated = true;
+            //     resolve(results);
+            // })
+            // .catch(error=>{
+            //     this.authenticated = false;
+            //     reject(error);
+            // })
+            console.log(username + " " + password);
+            resolve("bang");
+        });
+    }
 }
 
 const auth = new AuthHandler();
