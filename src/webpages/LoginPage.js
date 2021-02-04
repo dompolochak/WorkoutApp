@@ -23,20 +23,21 @@ class LoginPage extends React.Component
         });
     }
     //called one enter button
-    async handleInput()
+    handleInput()
     {
-        if(!this.checkInputs())//input validation
+        if(!this.checkInputs()){//input validation
             return;
+        }
         else if(this.state.createAccount)//create new account
         {
             //promise in AuthHandler takes user information and tries to register
-            await auth.requestRegistration(this.state.username, this.state.email, this.state.password)
+            auth.requestRegistration(this.state.username, this.state.email, this.state.password)
             .then((results)=>{console.log(results);})
             .catch((error)=>{console.log(error);});
         }
         else//login existing account
         {
-            await auth.requestLogin(this.state.username, this.state.password)
+            auth.requestLogin(this.state.username, this.state.password)
             .then(results=>{console.log(results);})
             .catch((error)=>{console.log(error);});
         }
@@ -66,8 +67,8 @@ class LoginPage extends React.Component
                 return false;
             }
         }
-        else
-            return true;
+
+        return true;
     }
 
     validateEmail(){

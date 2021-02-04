@@ -33,11 +33,12 @@ class AuthHandler{
     //post: if register successful resolve promise, else reject
     requestRegistration(username, email, password)
     {
+        console.log("requesting registration");
         return new Promise((resolve,reject)=>{
             axios.post(ROUTES.register,{
                 username: username,
                 email: email,
-                password: password
+                password: password,
             })
             .then(results=>{
                 this.authenticated = true;
@@ -54,20 +55,18 @@ class AuthHandler{
     //post: attempt login and resolve or reject
     requestLogin(username, password){
         return new Promise((resolve,reject)=>{
-            // axios.post(ROUTES.login,{
-            //     username: username,
-            //     password: password
-            // })
-            // .then(results=>{
-            //     this.authenticated = true;
-            //     resolve(results);
-            // })
-            // .catch(error=>{
-            //     this.authenticated = false;
-            //     reject(error);
-            // })
-            console.log(username + " " + password);
-            resolve("bang");
+            axios.post(ROUTES.login,{
+                username: username,
+                password: password
+            })
+            .then(results=>{
+                this.authenticated = true;
+                resolve(results);
+            })
+            .catch(error=>{
+                this.authenticated = false;
+                reject(error);
+            })
         });
     }
 }

@@ -7,7 +7,9 @@ const ROUTES={
     post_workouts: domain + "/post_workouts",
     edit_workouts: domain + "/edit_workout",
     delete_workouts: domain + "/delete_workout",
-    checkAuthentication: domain + "/checkAuthentication"
+    checkAuthentication: domain + "/checkAuthentication",
+    register: domain + "/register",
+    login: domain + "/login"
 }
 
 export default ROUTES;
