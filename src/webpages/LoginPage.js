@@ -1,14 +1,14 @@
 import React from 'react';
 import Button from '../components/homePage/Button';
-import axios from 'axios';
 import auth from '../Utilities/Authentication/AuthHandler';
+import '../styles/Error.css'
 
 class LoginPage extends React.Component
 {
     constructor(props)
     {
         super(props);
-        this.state={username: null, password: null, createAccount: false, repassword: null, email: null};
+        this.state={username: null, password: null, createAccount: false, repassword: null, email: null, errorMessage: ''};
         this.handleChange = this.handleChange.bind(this);
         this.checkInputs = this.checkInputs.bind(this);
         this.handleInput = this.handleInput.bind(this);
@@ -33,7 +33,11 @@ class LoginPage extends React.Component
             //promise in AuthHandler takes user information and tries to register
             auth.requestRegistration(this.state.username, this.state.email, this.state.password)
             .then((results)=>{console.log(results);})
-            .catch((error)=>{console.log(error);});
+            .catch((error)=>{
+                if(error){
+                    this.setState({errorMessage: error.response.data.cause});                
+                }
+            });
         }
         else//login existing account
         {
@@ -47,23 +51,23 @@ class LoginPage extends React.Component
     {
         if(!this.state.username)
         {
-            alert("Username was left blank");
+            this.setState({errorMessage: 'No username entered'});
             return false;
         }
         if(this.state.createAccount){
             if(!this.state.password || !this.state.repassword)
             {
-                alert("One of the password lines was left blank");
+                this.setState({errorMessage: "One of the password lines was left blank"});
                 return false;
             }
             if(this.state.password !== this.state.repassword)
             {
-                alert("Passwords do not match");
+                this.setState({errorMessage:"Passwords do not match"});
                 return false;
             }
             if(!this.state.email || !this.validateEmail())
             {
-                alert("Invalid email");
+                this.setState({errorMessage:"Invalid email"});
                 return false;
             }
         }
@@ -82,6 +86,7 @@ class LoginPage extends React.Component
         {
             return(
                 <div>
+                    <p className='Error'>{this.state.errorMessage}</p>
                     <p>Username:</p> 
                     <input type="text" id="username" value={this.state.username ? this.state.username : ''} onChange={this.handleChange}/>
                     <br/>

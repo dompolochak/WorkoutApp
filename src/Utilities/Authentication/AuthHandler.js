@@ -46,6 +46,7 @@ class AuthHandler{
             })
             .catch(error=>{
                 this.authenticated = false;
+                console.log(JSON.stringify(error));
                 reject(error);
             });
            
